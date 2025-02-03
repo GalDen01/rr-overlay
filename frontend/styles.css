@@ -1,0 +1,15 @@
+body {
+    background: transparent;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.overlay {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
