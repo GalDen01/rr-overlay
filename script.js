@@ -5,20 +5,28 @@ function getQueryParam(param) {
 }
 
 // Récupérer le pseudo depuis l'URL
-let player = getQueryParam("player") || "steph";  // Valeur par défaut : "steph"
+let player = getQueryParam("player");
+
+// Si aucun pseudo n'est fourni, afficher un message d'instruction
+if (!player) {
+    document.getElementById("message").style.display = "block";  // Afficher le message
+    document.querySelector(".overlay").style.display = "none";  // Cacher l'overlay
+} else {
+    document.getElementById("message").style.display = "none";  // Cacher le message
+    fetchMMR(player);  // Charger les données du joueur
+}
 
 async function fetchMMR(player) {
     try {
         let response = await fetch(`http://localhost:5001/mmr?player=${player}`);
         let data = await response.json();
-        console.log("Debug API Response: ", data);
 
-        document.getElementById("mmr").textContent = `${data.rating}`;
+        document.getElementById("mmr").textContent = `MMR : ${data.rating}`;
 
         // Mise à jour de l'image de rang
         let rankImg = document.getElementById("rank-img");
         if (data.rank) {
-            rankImg.src = `/media/ranks/${data.rank}.png`;  // ✅ Assure-toi que le nom du fichier est identique
+            rankImg.src = `media/ranks/${data.rank}.png`;  // Assure-toi que le nom du fichier est identique
             rankImg.alt = data.rank;
         } else {
             rankImg.src = "";  // Mettre une image par défaut si nécessaire
@@ -29,8 +37,7 @@ async function fetchMMR(player) {
     }
 }
 
-// Charger le MMR dès le chargement de la page
-fetchMMR(player);
-
 // Rafraîchir toutes les 60 secondes
-setInterval(() => fetchMMR(player), 60000);
+setInterval(() => {
+    if (player) fetchMMR(player);
+}, 60000);
