@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from scraper import get_rating_and_rank  # ✅ Import corrigé
 from flask_cors import CORS
+
 app = Flask(__name__)
 
 CORS(app)
@@ -14,4 +15,4 @@ def fetch_mmr():
     return jsonify({"player": player, "rating": rating, "rank": rank})  # ✅ On renvoie aussi le rang
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5001)
