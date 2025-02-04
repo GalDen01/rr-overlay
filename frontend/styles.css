@@ -13,3 +13,9 @@ body {
     padding: 10px 20px;
     border-radius: 10px;
 }
+
+.rank-icon {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+}
