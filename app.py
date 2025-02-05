@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 from scraper import get_rating_and_rank
 from flask_cors import CORS
 
@@ -10,7 +10,7 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return "Whatever"
+    return render_template('index.html')
 
 @app.route('/mmr', methods=['GET'])
 def fetch_mmr():
