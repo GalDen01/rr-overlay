@@ -34,7 +34,6 @@ async function fetchMMR(player) {
     }
 }
 
-
 setInterval(() => {
     if (player) fetchMMR(player);
 }, 60000);
