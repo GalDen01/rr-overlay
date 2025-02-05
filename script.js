@@ -26,7 +26,7 @@ async function fetchMMR(player) {
         // Mise à jour de l'image de rang
         let rankImg = document.getElementById("rank-img");
         if (data.rank) {
-            rankImg.src = `media/ranks/${data.rank}.png`;  // Assure-toi que le nom du fichier est identique
+            rankImg.src = `github.com/GalDen01/rr-overlay/blob/main/media/ranks/${data.rank}.png`;
             rankImg.alt = data.rank;
         } else {
             rankImg.src = "";  // Mettre une image par défaut si nécessaire

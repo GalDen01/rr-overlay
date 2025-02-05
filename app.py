@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, origins=["http://127.0.0.1:5500", "https://galden01.github.io"])
 @app.route('/mmr', methods=['GET'])
 def fetch_mmr():
     player = request.args.get('player')
