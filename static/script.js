@@ -18,7 +18,7 @@ async function fetchMMR(player) {
         let response = await fetch(`/mmr?player=${player}`);
         let data = await response.json();
 
-        document.getElementById("mmr").textContent = `MMR : ${data.rating}`;
+        document.getElementById("mmr").textContent = `${data.rating}`;
 
         let rankImg = document.getElementById("rank-img");
         if (data.rank) {
