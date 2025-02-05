@@ -1,4 +1,5 @@
 import re
+import sys
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -6,7 +7,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-import sys
 
 def get_rating_and_rank(player_name):
     url = f"https://gb.hlorenzi.com/reg/D7D6u-/player/{player_name}"
@@ -14,18 +14,20 @@ def get_rating_and_rank(player_name):
     sys.stdout.reconfigure(encoding='utf-8')
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("--headless")  # Ensure Chrome runs in headless mode
+    chrome_options.add_argument("--no-sandbox")  # Added for sandboxing issues
+    chrome_options.add_argument("--disable-dev-shm-usage")  # For certain environments like Heroku
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")  # Avoid detection
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36")
 
+    # Use WebDriver Manager to get the latest chromedriver
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-    
+
     driver.get(url)
 
     try:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
-        
+
         page_text = driver.find_element(By.TAG_NAME, "body").text
         rating_match = re.search(r"Rating\s*:\s*(-?\d+)", page_text)
         rating = rating_match.group(1) if rating_match else "Inconnu"

@@ -15,7 +15,7 @@ if (!player) {
 
 async function fetchMMR(player) {
     try {
-        let response = await fetch(`https://rr-overlay-026cabce5497.herokuapp.com/mmr?player=${player}`);
+        let response = await fetch(`/mmr?player=${player}`);
         let data = await response.json();
 
         document.getElementById("mmr").textContent = `MMR : ${data.rating}`;

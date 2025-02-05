@@ -3,10 +3,9 @@ from flask import Flask, jsonify, render_template, request
 from scraper import get_rating_and_rank
 from flask_cors import CORS
 
-
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def home():
