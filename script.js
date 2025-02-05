@@ -1,19 +1,16 @@
-// Fonction pour récupérer les paramètres de l'URL
 function getQueryParam(param) {
     let params = new URLSearchParams(window.location.search);
     return params.get(param);
 }
 
-// Récupérer le pseudo depuis l'URL
 let player = getQueryParam("player");
 
-// Si aucun pseudo n'est fourni, afficher un message d'instruction
 if (!player) {
-    document.getElementById("message").style.display = "block";  // Afficher le message
-    document.querySelector(".overlay").style.display = "none";  // Cacher l'overlay
+    document.getElementById("message").style.display = "block";
+    document.querySelector(".overlay").style.display = "none";
 } else {
-    document.getElementById("message").style.display = "none";  // Cacher le message
-    fetchMMR(player);  // Charger les données du joueur
+    document.getElementById("message").style.display = "none";
+    fetchMMR(player);
 }
 
 async function fetchMMR(player) {
@@ -23,14 +20,13 @@ async function fetchMMR(player) {
 
         document.getElementById("mmr").textContent = `MMR : ${data.rating}`;
 
-        // Mise à jour de l'image de rang
         let rankImg = document.getElementById("rank-img");
         if (data.rank) {
             let rankLower = data.rank.toLowerCase();
             rankImg.src = `https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/${rankLower}.png`;
             rankImg.alt = data.rank;
         } else {
-            rankImg.src = "";  // Mettre une image par défaut si nécessaire
+            rankImg.src = "";
         }
 
     } catch (error) {
@@ -38,7 +34,6 @@ async function fetchMMR(player) {
     }
 }
 
-// Rafraîchir toutes les 60 secondes
 setInterval(() => {
     if (player) fetchMMR(player);
 }, 60000);
