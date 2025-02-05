@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MKWi Overlay</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="overlay">
@@ -17,6 +17,6 @@
         Please put this at the end of the URL: <code>?player=&lt;your name&gt;</code>, your name being either your Lorenzi name on <a href="https://gb.hlorenzi.com/reg/D7D6u-" target="_blank">https://gb.hlorenzi.com/reg/D7D6u-</a> or someone else's name.
     </div>
 
-    <script src="script.js"></script>
+    <script src="{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
