@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ player }}'s MMR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="overlay">
+        <h3>MMR : {{ rating }}</h3>
+
+        {% if rank %}
+            <img src="https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/{{ rank.lower() }}.png" 
+                 alt="{{ rank }}" class="rank-icon">
+        {% else %}
+            <p>No rank available</p>
+        {% endif %}
+    </div>
+</body>
+</html>

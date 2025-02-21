@@ -20,7 +20,11 @@ def fetch_mmr():
         return jsonify({"error": "Aucun joueur spécifié"}), 400
 
     rating, rank = get_rating_and_rank(player, leaderboard)
-    return jsonify({"player": player, "rating": rating, "rank": rank})
+
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify({"player": player, "rating": rating, "rank": rank})
+
+    return render_template('mmr.html', player=player, rating=rating, rank=rank)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5001))

@@ -24,7 +24,9 @@ async function fetchMMR(player, leaderboard) {
     mmrContainer.style.display = "none";
 
     try {
-        let response = await fetch(`/mmr?player=${encodeURIComponent(player)}&leaderboard=${leaderboard}`);
+        let response = await fetch(`/mmr?player=${encodeURIComponent(player)}&leaderboard=${leaderboard}`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        });
         let data = await response.json();
 
         if (data.error) {
@@ -38,9 +40,10 @@ async function fetchMMR(player, leaderboard) {
             let rankLower = data.rank.toLowerCase();
             rankImg.src = `https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/${rankLower}.png`;
             rankImg.alt = data.rank;
+            rankImg.onclick = () => window.location.href = `/mmr?player=${encodeURIComponent(player)}&leaderboard=${leaderboard}`;
         } else {
             rankImg.src = "";
-            rankImg.style.display = "none"; 
+            rankImg.style.display = "none";
         }
 
         mmrContainer.style.display = "block";
