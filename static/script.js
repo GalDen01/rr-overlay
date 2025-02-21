@@ -1,39 +1,53 @@
-function getQueryParam(param) {
-    let params = new URLSearchParams(window.location.search);
-    return params.get(param);
+function updateMMR() {
+    let player = document.getElementById("player").value.trim();
+    let leaderboard = document.getElementById("leaderboard").value;
+
+    if (!player) {
+        alert("Please enter a player name.");
+        return;
+    }
+
+    let messageElement = document.getElementById("message");
+    if (messageElement) {
+        messageElement.style.display = "none";
+    }
+
+    fetchMMR(player, leaderboard);
 }
 
-let player = getQueryParam("player");
+async function fetchMMR(player, leaderboard) {
+    let loadingSpinner = document.getElementById("loading");
+    let mmrContainer = document.getElementById("mmr-container");
+    let rankImg = document.getElementById("rank-img");
 
-if (!player) {
-    document.getElementById("message").style.display = "block";
-    document.querySelector(".overlay").style.display = "none";
-} else {
-    document.getElementById("message").style.display = "none";
-    fetchMMR(player);
-}
+    loadingSpinner.style.display = "block";
+    mmrContainer.style.display = "none";
 
-async function fetchMMR(player) {
     try {
-        let response = await fetch(`/mmr?player=${player}`);
+        let response = await fetch(`/mmr?player=${encodeURIComponent(player)}&leaderboard=${leaderboard}`);
         let data = await response.json();
 
-        document.getElementById("mmr").textContent = `${data.rating}`;
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
 
-        let rankImg = document.getElementById("rank-img");
+        document.getElementById("mmr").textContent = `MMR : ${data.rating}`;
+
         if (data.rank) {
             let rankLower = data.rank.toLowerCase();
             rankImg.src = `https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/${rankLower}.png`;
             rankImg.alt = data.rank;
         } else {
             rankImg.src = "";
+            rankImg.style.display = "none"; 
         }
 
+        mmrContainer.style.display = "block";
+
     } catch (error) {
-        console.error("Erreur de récupération du MMR :", error);
+        console.error("Error fetching MMR:", error);
+    } finally {
+        loadingSpinner.style.display = "none";
     }
 }
-
-setInterval(() => {
-    if (player) fetchMMR(player);
-}, 60000);

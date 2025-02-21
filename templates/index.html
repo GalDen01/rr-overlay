@@ -7,16 +7,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="overlay">
-        <h2 id="mmr">???</h2>
-        <img id="rank-img" src="" alt="Rang" class="rank-icon">
-    </div>
-    
 
-    <div id="message">
-        Before anything, Thank you very much Noel for helping me putting this out. If you have any questions about possible things to add or just general questions, dm "galden." on Discord. <br>
-        Please put this at the end of the URL: <code>?player=&lt;your name&gt;</code>, your name being either your Lorenzi name on <a href="https://gb.hlorenzi.com/reg/D7D6u-" target="_blank">https://gb.hlorenzi.com/reg/D7D6u-</a> or someone else's name. <br><br>
-        To be able to see your MMR, create a browser source on OBS, and add the URL with the player name at the end. You'll be able to modify the size however you want it to be.
+    <div class="overlay">
+        <h2>Check Your MMR</h2>
+        
+        <input type="text" id="player" placeholder="Enter Player Name">
+        
+        <select id="leaderboard">
+            <option value="D7D6u-">Retro Leaderboard</option>
+            <option value="Y6ND2_">CT Leaderboard</option>
+        </select>
+
+        <button onclick="updateMMR()">Fetch MMR</button>
+        <div id="loading" class="loading-spinner" style="display: none;"></div>
+
+
+        <div id="mmr-container" style="display: none;">
+            <h2 id="mmr">MMR : ???</h2>
+            <img id="rank-img" src="" alt="Rang" class="rank-icon">
+        </div>
+        
+
+        <div id="message">
+            Please enter your player name and select a leaderboard.
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>

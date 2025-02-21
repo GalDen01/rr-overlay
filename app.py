@@ -14,10 +14,12 @@ def home():
 @app.route('/mmr', methods=['GET'])
 def fetch_mmr():
     player = request.args.get('player')
+    leaderboard = request.args.get('leaderboard', 'D7D6u-')
+
     if not player:
         return jsonify({"error": "Aucun joueur spécifié"}), 400
 
-    rating, rank = get_rating_and_rank(player)
+    rating, rank = get_rating_and_rank(player, leaderboard)
     return jsonify({"player": player, "rating": rating, "rank": rank})
 
 if __name__ == '__main__':
