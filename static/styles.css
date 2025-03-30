@@ -7,8 +7,8 @@ body {
 }
 
 .overlay {
-    display: inline-block;
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     align-items: center;  /* Center horizontally */
     justify-content: center;  /* Center vertically */
     text-align: center;
@@ -51,7 +51,7 @@ button:hover {
 }
 
 .rank-icon {
-    width: 100px;
+    width: 50px;
     height: auto;
 }
 
