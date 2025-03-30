@@ -1,24 +1,32 @@
+let isAutoRefreshing = false;
+
+function startAutoRefresh(player, leaderboard) {
+    if (!isAutoRefreshing) {
+        isAutoRefreshing = true;
+        setInterval(() => {
+            console.log(`Refreshing MMR for ${player}`);
+            fetchMMR(player, leaderboard);
+        }, 60000); 
+    }
+}
+
+
 function updateMMR() {
     let player = document.getElementById("player").value.trim();
     let leaderboard = document.getElementById("leaderboard").value;
 
-    if (!player) {
+    if (player) {
+        fetchMMR(player, leaderboard);
+    } else {
         alert("Please enter a player name.");
-        return;
     }
-
-    let messageElement = document.getElementById("message");
-    if (messageElement) {
-        messageElement.style.display = "none";
-    }
-
-    fetchMMR(player, leaderboard);
 }
 
 async function fetchMMR(player, leaderboard) {
     let loadingSpinner = document.getElementById("loading");
     let mmrContainer = document.getElementById("mmr-container");
     let rankImg = document.getElementById("rank-img");
+    let rankText = document.getElementById("rank");
 
     loadingSpinner.style.display = "block";
     mmrContainer.style.display = "none";
@@ -40,13 +48,17 @@ async function fetchMMR(player, leaderboard) {
             let rankLower = data.rank.toLowerCase();
             rankImg.src = `https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/${rankLower}.png`;
             rankImg.alt = data.rank;
+            rankText.style.display = "block";
             rankImg.onclick = () => window.location.href = `/mmr?player=${encodeURIComponent(player)}&leaderboard=${leaderboard}`;
         } else {
             rankImg.src = "";
             rankImg.style.display = "none";
+            rankText.style.display = "none";
         }
 
         mmrContainer.style.display = "block";
+
+        startAutoRefresh(player, leaderboard);
 
     } catch (error) {
         console.error("Error fetching MMR:", error);
