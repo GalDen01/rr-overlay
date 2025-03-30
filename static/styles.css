@@ -19,7 +19,7 @@ body {
 
 .last-page {
     display: flex;
-    flex-direction: line;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     text-align: center;
