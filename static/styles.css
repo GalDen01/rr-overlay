@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background: transparent;
-    color: white;
+    color: linear-gradient(to bottom, rgba(43, 2, 246, 0), rgba(17, 1, 101, 0));
     text-align: center;
     padding: 20px;
 }
@@ -12,7 +12,7 @@ body {
     align-items: center;  /* Center horizontally */
     justify-content: center;  /* Center vertically */
     text-align: center;
-    background: rgba(71, 71, 71, 0.1);
+    background: transparent;
     padding: 20px;
     border-radius: 10px;
     width: 250px;  /* Adjust width as needed */
