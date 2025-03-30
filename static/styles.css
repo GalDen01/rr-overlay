@@ -17,7 +17,7 @@ body {
     width: 250px;  /* Adjust width as needed */
 }
 
-.first-page {
+.last-page {
     display: flex;
     flex-direction: line;
     align-items: center;
