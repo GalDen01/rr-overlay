@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 def get_rating_and_rank(player_name, leaderboard):
     url = f"https://gb.hlorenzi.com/reg/{leaderboard}/player/{player_name}"
@@ -23,14 +24,23 @@ def get_rating_and_rank(player_name, leaderboard):
     try:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
 
-        page_text = driver.find_element(By.TAG_NAME, "body").text
-        rating_match = re.search(r"Rating\s*:\s*(-?\d+)", page_text)
-        rating = rating_match.group(1) if rating_match else "Inconnu"
+        for _ in range(5):
+            try:
+                player_div = driver.find_element(By.XPATH, f"//div[contains(text(), '{player_name}')]")
+                break 
+            except:
+                time.sleep(2)
 
-        player_div = driver.find_element(By.XPATH, "//div[contains(text(), '{}')]".format(player_name))
+        if not player_div:
+            print("Element not found. Debugging page source:")
+            print(driver.page_source)
+            return None, None
 
         rank_div = player_div.find_element(By.XPATH, "./div")
         rank = rank_div.text.strip().upper() if rank_div else "INCONNU"
+
+        rating_match = re.search(r"Rating\s*:\s*(-?\d+)", driver.find_element(By.TAG_NAME, "body").text)
+        rating = rating_match.group(1) if rating_match else "Inconnu"
 
         print(f"Joueur: {player_name} | MMR: {rating} | Rang: {rank} | Leaderboard: {leaderboard}")
         return rating, rank
