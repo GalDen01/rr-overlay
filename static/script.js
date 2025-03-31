@@ -49,7 +49,7 @@ async function fetchMMR(player, leaderboard) {
             rankImg.src = `https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/${rankLower}.png`;
             rankImg.alt = data.rank;
             rankText.style.display = "block";
-            rankImg.onclick = () => window.location.href = `/mmr?player=${encodeURIComponent(player)}&leaderboard=${leaderboard}`;
+            rankImg.onclick = () => window.location.href = `/mmr?player=${encodeURIComponent(player)}&leaderboard=${encodeURIComponent(leaderboard)}`;
         } else {
             rankImg.src = "";
             rankImg.style.display = "none";

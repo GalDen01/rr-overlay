@@ -14,7 +14,10 @@ def home():
 @app.route('/mmr', methods=['GET'])
 def fetch_mmr():
     player = request.args.get('player')
-    leaderboard = request.args.get('leaderboard', 'D7D6u-')
+    leaderboard = request.args.get('leaderboard')
+
+    if not leaderboard:
+        leaderboard = "D7D6u-"
 
     if not player:
         return jsonify({"error": "Aucun joueur spécifié"}), 400
@@ -24,7 +27,8 @@ def fetch_mmr():
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return jsonify({"player": player, "rating": rating, "rank": rank})
 
-    return render_template('mmr.html', player=player, rating=rating, rank=rank)
+    return render_template('mmr.html', player=player, leaderboard=leaderboard, rating=rating, rank=rank)
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5001))

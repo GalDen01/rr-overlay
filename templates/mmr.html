@@ -10,46 +10,39 @@
     <div class="overlay">
         <h3 id="mmr">MMR : {{ rating }}</h3>
         {% if rank %}
-            <img id="rank-img" 
-                 src="https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/{{ rank.lower() }}.png" 
+            <img id="rank-img" src="https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/{{ rank.lower() }}.png" 
                  alt="{{ rank }}" class="rank-icon">
         {% else %}
-            <p id="no-rank">No rank available</p>
+            <p>No rank available</p>
         {% endif %}
     </div>
 
     <script>
-        function updateMMR() {
-            fetch("/mmr?player={{ player }}&leaderboard={{ leaderboard }}", {
-                headers: { "X-Requested-With": "XMLHttpRequest" }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.rating) {
-                    document.getElementById("mmr").textContent = "MMR : " + data.rating;
+        async function fetchUpdatedMMR() {
+            try {
+                let response = await fetch(`/mmr?player={{ player }}&leaderboard={{ leaderboard }}`, {
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                });
+                let data = await response.json();
+
+                if (data.error) {
+                    console.error("Error fetching MMR:", data.error);
+                    return;
                 }
+
+                document.getElementById("mmr").textContent = `MMR : ${data.rating}`;
 
                 if (data.rank) {
                     let rankImg = document.getElementById("rank-img");
-                    if (!rankImg) {
-                        rankImg = document.createElement("img");
-                        rankImg.id = "rank-img";
-                        rankImg.classList.add("rank-icon");
-                        document.querySelector(".overlay").appendChild(rankImg);
-                    }
                     rankImg.src = `https://raw.githubusercontent.com/GalDen01/rr-overlay/refs/heads/main/media/ranks/${data.rank.toLowerCase()}.png`;
                     rankImg.alt = data.rank;
-
-                    let noRankText = document.getElementById("no-rank");
-                    if (noRankText) {
-                        noRankText.remove();
-                    }
                 }
-            })
-            .catch(error => console.error("Error updating MMR:", error));
+            } catch (error) {
+                console.error("Error fetching updated MMR:", error);
+            }
         }
 
-        setInterval(updateMMR, 60000);
+        setInterval(fetchUpdatedMMR, 60000);
     </script>
 </body>
 </html>
